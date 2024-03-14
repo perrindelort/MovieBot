@@ -1,0 +1,11 @@
+# Ignore all .txt files
+*.txt
+
+# Ignore all notebooks
+*.ipynb
+
+# Ignore some folders
+Rasa/
+.ipynb_checkpoints/
+__pycache__/
+flagged/

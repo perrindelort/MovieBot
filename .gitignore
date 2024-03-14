@@ -5,6 +5,9 @@
 # Ignore all notebooks
 *.ipynb
 
+# Ignore .csv
+mpst_full_data.csv
+
 # Ignore some folders
 Rasa/
 .ipynb_checkpoints/

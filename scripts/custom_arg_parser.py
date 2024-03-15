@@ -29,7 +29,7 @@ class ChatBotArgumentParser(argparse.ArgumentParser):
                           help = "Voulez-vous relancer le preprocess des données ?")
         
         self.add_argument("--test",
-                          dest = "bool_preprocess",
+                          dest = "test",
                           action = "store_true",
                           default = False,
                           help = "Voulez-vous voir le résultats des tests ? ?")

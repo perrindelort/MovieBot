@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 class MovieDatabase():
-    def __init__(self,path, / ,bool_preprocess = False):
+    def __init__(self,path,bool_preprocess = False):
         """
         """
         data_path = os.path.join(path, "mpst_full_data_test.csv")

@@ -74,20 +74,20 @@ class MovieRecommandationChatBot():
         self.substate % 2
     
     def chat(self,message,history):
-        # On update l'état (state) du bot en fonction de l'input utilisateur
-        is_state_updated = self.update_state(message)
         
-        # Si l'état n'est pas update (input incorrect), on redemande à l'utilisateur jusqu'à obtenir un input correct
-        while is_state_updated == False:
-            return  FIXED_MESSAGES["INPUT INCORRECT"]
+        if self.state == 0:
+            
+            # On update l'état (state) du bot en fonction de l'input utilisateur
+            is_state_updated = self.update_state(message)
+            
+            # Si l'état n'est pas update (input incorrect), on redemande à l'utilisateur jusqu'à obtenir un input correct
+            while is_state_updated == False:
+                return  FIXED_MESSAGES["INPUT INCORRECT"]
         
         else:
-            # 
-            if self.state == 0:
-                return FIXED_MESSAGES["RETOUR ETAT 0"]
             
             # On retourne à l'utilisateur 5 films en fonction de genres qu'il demande
-            elif self.state == 1:
+            if self.state == 1:
                 
                 # On demande des genres de film à l'utilisateur
                 if self.substate == 0:

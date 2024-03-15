@@ -13,6 +13,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, StoppingCriteria, 
 from threading import Thread
 
 from utils import *
+from movie_database import MovieDatabase
 
 class HelloChatBot():
     def __init__(self):
@@ -111,6 +112,7 @@ class MovieRecommandationChatBot():
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
+                    list_movies = message.split(' ')
                     retrieved, retrieved_movies = self.database.retrieve_movies_from_similarity(list_movies)
                     if retrieved == True:
                         self.reset_states()

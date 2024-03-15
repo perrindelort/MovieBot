@@ -53,13 +53,20 @@ class MovieRecommandationChatBot():
         0 -> Demande plus de précisions à l'utilisateur
         1 -> Répond à l'utilisateur
         """
-        
+    
+    def set_database(self,database : MovieDatabase):
+        self.database = database
+    
     def update_state(self,message):
         try:
             self.state = FIXED_COMMANDS[message]
             return True
         except:
             return False
+        
+    def reset_states(self):
+        self.state = 0
+        self.sub_state = 0
         
     def update_substate(self):
         self.substate += 1 
@@ -104,8 +111,15 @@ class MovieRecommandationChatBot():
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
-                    self.update_substate()
-                    pass
+                    retrieved, retrieved_movies = self.database.retrieve_movies_from_similarity(list_movies)
+                    if retrieved == True:
+                        self.reset_states()
+                        return "Voici les films que je vous propose ! \n    - " + "    - ".join(retrieved_movies)
+                    else:
+                        # On ne met pas à jour le state
+                        # On redemande des films à l'utilisateur
+                        self.update_substate()
+                        return FIXED_MESSAGES["FILMS INCONNUS"]
                 
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")

@@ -9,6 +9,7 @@ import os
 from movie_database import MovieDatabase
 from chatbot import create_chatbot
 from custom_arg_parser import ChatBotArgumentParser
+from test import test
 
 if __name__ == "__main__":
     parser = ChatBotArgumentParser()
@@ -17,6 +18,12 @@ if __name__ == "__main__":
     PATH = os.path.dirname(os.path.abspath(__file__))
     #print(PATH)
     #print(os.path.join(PATH, "..", "datasets"))
-    database = MovieDatabase(path = os.path.join(PATH, "..", "datasets"))
+    database = MovieDatabase(path = os.path.join(PATH, "..", "datasets"), 
+                             bool_preprocess = args.bool_preprocess)
     chatbot = create_chatbot(args.chatbot)
+    chatbot.set_database(database)
+    
+    if args.test:
+        test(database)
+    
     chatbot.launch()

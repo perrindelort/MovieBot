@@ -15,4 +15,5 @@ FIXED_COMMANDS = {"Je souhaite revenir au menu" : 0,
 FIXED_MESSAGES = {'INPUT INCORRECT' : "Je n'ai pas compris votre demande, entrez l'une des commandes suivantes : \n    - "+'\n    - '.join(FIXED_COMMANDS.keys()),
                   'RETOUR ETAT 0' : "J'espère avoir répondu à votre demande ! \n Si vous avez d'autres questions à me poser n'hésitez pas ! :)",
                   'DEMANDER GENRES' : "Quel genre de film voulez-vous voir ce soir ?",
-                  'DEMANDER FILMS' : "Quels films avez vous-vu et/ou apprécié ?"}
+                  'DEMANDER FILMS' : "Quels films avez vous-vu et/ou apprécié ?",
+                  'FILMS INCONNUS' : "Il semblerait que je ne connaisse aucun des films que vous avez évoqué. \n Pouvez-vous me soumettre de nouveaux titres de films afin que je puisse vous conseiller"}

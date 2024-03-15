@@ -117,6 +117,8 @@ class MovieRecommandationChatBot():
                     if retrieved == True:
                         self.reset_states()
                         return "Voici les films que je vous propose ! \n    - " + "    - ".join(retrieved_movies)
+                    
+                    # On n'a trouvé aucun film évoqué par l'utilisateur dans la database
                     else:
                         # On ne met pas à jour le state
                         # On redemande des films à l'utilisateur

@@ -15,8 +15,8 @@ class MovieDatabase():
     def __init__(self,path,bool_preprocess = False):
         """
         """
-        data_path = os.path.join(path, "mpst_full_data_test.csv")
-        processed_data_path = os.path.join(path, "mpst_processed_data_test.csv")
+        data_path = os.path.join(path, "mpst_full_data.csv")
+        processed_data_path = os.path.join(path, "mpst_processed_data.csv")
         if os.path.exists(processed_data_path):
             if bool_preprocess == False:
                 self.database = pd.read_csv(processed_data_path)

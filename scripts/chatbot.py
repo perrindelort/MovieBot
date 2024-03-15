@@ -67,15 +67,22 @@ class MovieRecommandationChatBot():
         
     def reset_states(self):
         self.state = 0
-        self.sub_state = 0
+        self.substate = 0
         
     def update_substate(self):
         self.substate += 1 
-        self.substate % 2
+        self.substate %= 2
     
     def chat(self,message,history):
         
+        print(f"En recevant le message {message} l'état du bot est le suivant : \n    state : {self.state} \n    substate : {self.substate}")
+        
+        is_state_updated = False
+        
         if self.state == 0:
+            
+            # On reset les états (notamment substate)
+            self.reset_states()
             
             # On update l'état (state) du bot en fonction de l'input utilisateur
             is_state_updated = self.update_state(message)
@@ -84,7 +91,7 @@ class MovieRecommandationChatBot():
             while is_state_updated == False:
                 return  FIXED_MESSAGES["INPUT INCORRECT"]
         
-        else:
+        if is_state_updated == True or self.state != 0:
             
             # On retourne à l'utilisateur 5 films en fonction de genres qu'il demande
             if self.state == 1:
@@ -112,17 +119,16 @@ class MovieRecommandationChatBot():
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
-                    list_movies = message.split(' ')
+                    list_movies = message.split(',')
                     retrieved, retrieved_movies = self.database.retrieve_movies_from_similarity(list_movies)
                     if retrieved == True:
                         self.reset_states()
-                        return "Voici les films que je vous propose ! \n    - " + "    - ".join(retrieved_movies)
+                        return "Voici les films que je vous propose ! \n    - " + "\n    - ".join(retrieved_movies)
                     
                     # On n'a trouvé aucun film évoqué par l'utilisateur dans la database
                     else:
                         # On ne met pas à jour le state
                         # On redemande des films à l'utilisateur
-                        self.update_substate()
                         return FIXED_MESSAGES["FILMS INCONNUS"]
                 
                 else:
@@ -131,7 +137,9 @@ class MovieRecommandationChatBot():
             # ValueError
             else:
                 raise ValueError(f"Valeur incorrecte : self.state = {self.state}")
-        
+                
+        else:
+            raise ValueError(f"Ce cas de figure n'est pas censé arriver")
     def launch(self):
         self.demo.launch()
 

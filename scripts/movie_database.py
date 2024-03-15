@@ -28,9 +28,10 @@ class MovieDatabase():
         else:
             # Gérer le cas de téléchargement du dataset depuis Kaggle
             if os.path.exists(data_path) == False:
-                print("A")
-                api = KaggleApi()
-                api.dataset_download_files('cryptexcode/mpst-movie-plot-synopses-with-tags', path=data_path)
+                #print("A")
+                #api = KaggleApi()
+                #api.dataset_download_files('cryptexcode/mpst-movie-plot-synopses-with-tags', path=data_path)
+                pass
                 
             self.database = pd.read_csv(data_path)
             self.preprocess(processed_data_path)

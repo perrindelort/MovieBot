@@ -42,7 +42,6 @@ class MovieDatabase():
         self.database = pd.read_csv(data_path)
         self.preprocess()
         self.mask = self.database.duplicated(subset = ['title'])
-
         vectorizer = TfidfVectorizer(stop_words='english')
         synopsis_vectors = vectorizer.fit_transform(self.database[~self.mask]['plot_synopsis_lower'])
         self.similarities = cosine_similarity(synopsis_vectors)
@@ -160,18 +159,18 @@ class MovieDatabase():
         set_genres = set(genres)
         
         # On compte le nombre de tags en commun
-        self.database['matching_tags'] = self.database['tags_list'].apply(lambda x : len(set(x).intersection(set_genres)))
+        db = self.database.copy()
+        db['matching_tags'] = db['tags_list'].apply(lambda x : len(set(x).intersection(set_genres)))
         
         # On garde uniquement les lignes avec au moins un match  et on drop la colonne créé sur la database
-        filtered_database = self.database[self.database['matching_tags'] > 0][['title_lower','matching_tags']]
-        self.database.drop('matching_tags')
+        filtered_database = db[db['matching_tags'] > 0][['title_lower','matching_tags']]
         
         # On randomise les lignes ayant le même nombre de matching tags et on trie par ordre de matching_tags décroissant
         for value in filtered_database['matching_tags'].unique():
             idx = filtered_database.index[filtered_database['matching_tags'] == value]
             np.random.shuffle(idx)
             filtered_database.loc[idx, 'random'] = np.random.rand(len(idx))
-        filtered_database = filtered_database.sort_values(by=['matching_tags','random'], ascending = [False,True]).drop(columns='random')
+        filtered_database = filtered_database.sort_values(by=['matching_tags','random'], ascending = [False,True])
         
         # On enlève les films en doubles en gardant celui qui match le mieux les tags 
         # et en breakant les ties avec le random introduit précédemment
@@ -225,21 +224,18 @@ class MovieDatabase():
         liste_index = [] 
         length = 0
         
-        db = self.database[~self.mask]
+        db = self.database[~self.mask].copy()
         
-        # Tri des films valides
-        for i in list_movies :                   
+        for i in list_movies :                         # Tri des films valides
             if i in db['title_lower'].tolist():
                 length += 1
             else :
                 list_movies.remove(i)
-        
-        # Cas 1
-        if length == 0 :                                  
-            # list_return = self.database['title'].sample(n=5, replace=False).tolist()
-            return False, []
-        # Cas 2 et 3
-        else :                                        
+                    
+        if length == 0 :                               # Cas 1   
+            list_return = db['title'].sample(n=5, replace=False).tolist()
+            
+        else :                                         # Cas 2 et 3
             while len(list_return) < 5 :        
                 for titre in list_movies:              
                     index_movie = db[db['title_lower'] == titre].index[0]
@@ -253,5 +249,5 @@ class MovieDatabase():
                     liste_index.append(most_similar_index)
                     list_return.append(most_similar_movie_title)
                     if len(list_return) == 5:
-                        break    
+                        break   
         return True, list_return    

@@ -76,8 +76,10 @@ class MovieRecommandationChatBot():
     def chat(self,message,history):
         
         print(f"En recevant le message {message} l'état du bot est le suivant : \n    state : {self.state} \n    substate : {self.substate}")
-        
-        is_state_updated = False
+        # Retour au menu
+        if message == INV_FIXED_COMMANDS[0]:
+            self.reset_states()
+            return FIXED_MESSAGES["RETOUR MENU"]
         
         if self.state == 0:
             
@@ -91,7 +93,8 @@ class MovieRecommandationChatBot():
             while is_state_updated == False:
                 return  FIXED_MESSAGES["INPUT INCORRECT"]
         
-        if is_state_updated == True or self.state != 0:
+        if self.state != 0:
+            print(f"self.state : {self.state}")
             
             # On retourne à l'utilisateur 5 films en fonction de genres qu'il demande
             if self.state == 1:
@@ -103,9 +106,22 @@ class MovieRecommandationChatBot():
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
-                    self.update_substate()
-                    pass
-                
+                    list_genres = message.split(',')
+                    retrieved, retrieved_movies = self.database.retrieve_movies_from_genre(list_genres)
+                    print(f"list_genres : {list_genres}")
+                    print(retrieved_movies)
+                    # retrieved, retrieved_movies = self.database.retrieve_movies_from_genre_optimized(list_genres)
+                    if retrieved == True:
+                        self.reset_states()
+                        return "Voici les films que je vous propose qui correspondent le mieux aux tags " + " ".join([genre for genre in list_genres]) + " ! \n    - " + "\n    - ".join(retrieved_movies)
+
+                    
+                    # On n'a trouvé aucun film correspondant aux genres demandés par l'utilisateur dans la database
+                    # OU l'utilisateur n'a pas soumis de genres / on n'a pas compris les genres soumis
+                    else:
+                        # On ne met pas à jour le state
+                        # On redemande des genres à l'utilisateur
+                        return FIXED_MESSAGES['GENRES INCONNUS']
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")
                     
@@ -130,16 +146,15 @@ class MovieRecommandationChatBot():
                         # On ne met pas à jour le state
                         # On redemande des films à l'utilisateur
                         return FIXED_MESSAGES["FILMS INCONNUS"]
-                
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")
                     
             # ValueError
             else:
+                print(self.state)
                 raise ValueError(f"Valeur incorrecte : self.state = {self.state}")
-                
-        else:
-            raise ValueError(f"Ce cas de figure n'est pas censé arriver")
+        
+            
     def launch(self):
         self.demo.launch()
 

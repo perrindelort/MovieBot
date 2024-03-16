@@ -35,4 +35,8 @@ def test_julien(database : MovieDatabase):
 # =============================================================================
     
 def test(database : MovieDatabase):
+    n_dashes = 30
+    print("\n Début des tests \n" + "-"*n_dashes)
+    print("                            TEST DE JULIEN                            ")
     test_julien(database)
+    print("-"*n_dashes)

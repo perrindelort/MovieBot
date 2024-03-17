@@ -12,6 +12,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import random
 import numpy as np
+from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
+from fuzzywuzzy import process
+from fuzzywuzzy import fuzz
+import re
 
 class MovieDatabase():
     def __init__(self,path,bool_preprocess = False):
@@ -42,14 +47,22 @@ class MovieDatabase():
         self.database = pd.read_csv(data_path)
         self.preprocess()
         self.mask = self.database.duplicated(subset = ['title'])
-        print(self.database.shape)
-        print(self.database[~self.mask].shape)
-        print(self.database[self.mask].shape)
+        
+        # Julien
         vectorizer = TfidfVectorizer(stop_words='english')
         synopsis_vectors = vectorizer.fit_transform(self.database[~self.mask]['plot_synopsis_lower'])
-        # synopsis_vectors = vectorizer.fit_transform(self.database['plot_synopsis_lower'])
         self.similarities = cosine_similarity(synopsis_vectors)
+        
+        # Hind
+        # get all the possible titles in a list
+        titles_list = self.database[~self.mask]['title_lower'].unique().tolist()
+        self.titles_list = [title for title in titles_list if len(title) != 1]
 
+        # get all the possible genres in a list
+        genres = self.database['tags'].str.split(', ').explode().str.strip()
+        # removing movie and film because it misleads the detection
+        genres = genres.str.replace(r'(\s*)(movie|film)(\s*)', '', regex=True)
+        self.genres_list = list(set(genres))
 
        
     def preprocess(self,processed_data_path = ""):
@@ -76,6 +89,52 @@ class MovieDatabase():
                 unique.append(id)
         return unique
     
+    def extract_genres(self,input_string):
+        """
+        Extracts the genre or the title that the bot user asked for and return it
+        :param input_string: the message of the bot user
+        :return: the genre or the title of the film
+        """
+        input_string.lower()
+
+        words = word_tokenize(input_string)
+        # tag the words and extract nouns and adjectives
+        tagged_tokens = pos_tag(words)
+        relevant_words = [word.lower() for word, tag in tagged_tokens if tag.startswith('NN') or tag.startswith('JJ')]
+        
+        # Find genres using fuzzy string matching
+        found_genres = []
+        for word in relevant_words:
+            matches = process.extract(word, self.genres_list, scorer=fuzz.partial_ratio)
+            for match in matches:
+                if match[1] > 85:
+                    found_genres.append(match[0])
+        if found_genres:
+            return True, found_genres
+        else:
+            False, []
+            
+    def extract_titles(self, input_string):
+        # Find titles
+        found_titles = []
+
+        for title in self.titles_list:
+            pattern = r'\b(' + re.escape(title) + r')\b'
+            if re.search(pattern, input_string):
+                found_titles.append(title)
+
+        # If many title are detected because of the same word, then delete the small title
+        if len(found_titles) > 1:
+            found_titles = sorted(found_titles, key=len, reverse=True)
+            for i, title in enumerate(found_titles[:-1]):
+                for other_title in found_titles[i + 1:]:
+                    common_words = set(title.split()) & set(other_title.split())
+                    if common_words:
+                        found_titles.remove(other_title)
+        if found_titles:
+            return True, found_titles
+        else:
+            return False, []
     
     def retrieve_movies_from_genre(self,genres):
         """

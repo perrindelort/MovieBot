@@ -106,22 +106,27 @@ class MovieRecommandationChatBot():
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
-                    list_genres = message.split(',')
-                    retrieved, retrieved_movies = self.database.retrieve_movies_from_genre(list_genres)
-                    print(f"list_genres : {list_genres}")
-                    print(retrieved_movies)
-                    # retrieved, retrieved_movies = self.database.retrieve_movies_from_genre_optimized(list_genres)
-                    if retrieved == True:
-                        self.reset_states()
-                        return "Voici les films que je vous propose qui correspondent le mieux aux tags " + " ".join([genre for genre in list_genres]) + " ! \n    - " + "\n    - ".join(retrieved_movies)
-
-                    
-                    # On n'a trouvé aucun film correspondant aux genres demandés par l'utilisateur dans la database
-                    # OU l'utilisateur n'a pas soumis de genres / on n'a pas compris les genres soumis
+                    # extracted, list_genres = self.database.extract_genres(message)
+                    extracted, list_genres = True, ['romantic']
+                    print(extracted, list_genres)
+                    if extracted == True:
+                        retrieved, retrieved_movies = self.database.retrieve_movies_from_genre(list_genres)
+                        # print(f"list_genres : {list_genres}")
+                        # print(retrieved_movies)
+                        # retrieved, retrieved_movies = self.database.retrieve_movies_from_genre_optimized(list_genres)
+                        if retrieved == True:
+                            self.reset_states()
+                            return "Voici les films que je vous propose qui correspondent le mieux aux tags " + " ".join([genre for genre in list_genres]) + " ! \n    - " + "\n    - ".join(retrieved_movies)
+    
+                        
+                        # On n'a trouvé aucun film correspondant aux genres demandés par l'utilisateur dans la database
+                        # OU l'utilisateur n'a pas soumis de genres / on n'a pas compris les genres soumis
+                        else:
+                            # On ne met pas à jour le state
+                            # On redemande des genres à l'utilisateur
+                            return FIXED_MESSAGES['GENRES INCONNUS']+"2"
                     else:
-                        # On ne met pas à jour le state
-                        # On redemande des genres à l'utilisateur
-                        return FIXED_MESSAGES['GENRES INCONNUS']
+                        return FIXED_MESSAGES['GENRES INCONNUS']+"1"
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")
                     
@@ -135,17 +140,22 @@ class MovieRecommandationChatBot():
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
-                    list_movies = message.split(',')
-                    retrieved, retrieved_movies = self.database.retrieve_movies_from_similarity(list_movies)
-                    if retrieved == True:
-                        self.reset_states()
-                        return "Voici les films que je vous propose ! \n    - " + "\n    - ".join(retrieved_movies)
-                    
-                    # On n'a trouvé aucun film évoqué par l'utilisateur dans la database
+                    #extracted, list_movies = self.database.extract_titles(message)
+                    extracted, list_movies = True, ['girl vs. monster']
+                    print(extracted, list_movies)
+                    if extracted == True:
+                        retrieved, retrieved_movies = self.database.retrieve_movies_from_similarity(list_movies)
+                        if retrieved == True:
+                            self.reset_states()
+                            return "Voici les films que je vous propose ! \n    - " + "\n    - ".join(retrieved_movies)
+                        
+                        # On n'a trouvé aucun film évoqué par l'utilisateur dans la database
+                        else:
+                            # On ne met pas à jour le state
+                            # On redemande des films à l'utilisateur
+                            return FIXED_MESSAGES["FILMS INCONNUS"]+"2"
                     else:
-                        # On ne met pas à jour le state
-                        # On redemande des films à l'utilisateur
-                        return FIXED_MESSAGES["FILMS INCONNUS"]
+                        return FIXED_MESSAGES["FILMS INCONNUS"] + "1"
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")
                     

@@ -34,9 +34,42 @@ def test_julien(database : MovieDatabase):
 #     print("Test 6 :\n" + str(database.retrieve_movies_from_similarity(liste_movies_6)) + "\n")
 # =============================================================================
     
+def test_hind(database : MovieDatabase):
+    # test genre intent
+    print("**********Test finding genre**********")
+    genre_strings = [
+        "I want a suspens film or horror",
+        "rommantic film is my favourite",
+        "A film about drama",
+        "I want a comedye movie",
+        "action",
+        "mystery"
+    ]
+    
+    for idx,input_string in enumerate(genre_strings):
+        extracted, genres = database.extract_genres(input_string)
+        print(f"Test {idx} : \n    Input : {input_string} \n    Output : {genres} \n")
+
+
+    # test title intent
+    print("**********Test finding title**********")
+    title_strings = [
+        "I want a film similar to skeleton crew",
+        "girl vs. monster is my best film and I also like monster",
+        "le plaisir",
+        "monster"
+    ]
+    
+    for idx,input_string in enumerate(title_strings):
+        extracted, titles = database.extract_titles(input_string)
+        print(f"Test {idx} : \n    Input : {input_string} \n    Output : {titles} \n")
+    
+    
 def test(database : MovieDatabase):
     n_dashes = 100
     print("\n Début des tests \n" + "-"*n_dashes)
+    print("                             TEST DE HIND                             ")
+    test_hind(database)
     print("                            TEST DE JULIEN                            ")
     test_julien(database)
     print("-"*n_dashes)

@@ -42,8 +42,12 @@ class MovieDatabase():
         self.database = pd.read_csv(data_path)
         self.preprocess()
         self.mask = self.database.duplicated(subset = ['title'])
+        print(self.database.shape)
+        print(self.database[~self.mask].shape)
+        print(self.database[self.mask].shape)
         vectorizer = TfidfVectorizer(stop_words='english')
         synopsis_vectors = vectorizer.fit_transform(self.database[~self.mask]['plot_synopsis_lower'])
+        # synopsis_vectors = vectorizer.fit_transform(self.database['plot_synopsis_lower'])
         self.similarities = cosine_similarity(synopsis_vectors)
 
 
@@ -84,7 +88,7 @@ class MovieDatabase():
         *** Output : Liste comprenant les 5 titres de films en String
         """
 
-        db0=self.database
+        db0=self.database.copy()
         db=db0.set_index("imdb_id")
         dict_films={} #dictionnaire comptant le nombre n de matchs avec les tags. clés: id, contenu: n
 
@@ -226,16 +230,19 @@ class MovieDatabase():
         
         db = self.database[~self.mask].copy()
         
-        for i in list_movies :                         # Tri des films valides
+        # Tri des films valides
+        for i in list_movies :                   
             if i in db['title_lower'].tolist():
                 length += 1
             else :
                 list_movies.remove(i)
-                    
-        if length == 0 :                               # Cas 1   
-            list_return = db['title'].sample(n=5, replace=False).tolist()
-            
-        else :                                         # Cas 2 et 3
+        
+        # Cas 1
+        if length == 0 :                                  
+            # list_return = self.database['title'].sample(n=5, replace=False).tolist()
+            return False, []
+        # Cas 2 et 3
+        else :                                        
             while len(list_return) < 5 :        
                 for titre in list_movies:              
                     index_movie = db[db['title_lower'] == titre].index[0]
@@ -249,5 +256,5 @@ class MovieDatabase():
                     liste_index.append(most_similar_index)
                     list_return.append(most_similar_movie_title)
                     if len(list_return) == 5:
-                        break   
+                        break    
         return True, list_return    

@@ -19,6 +19,7 @@ aws-c-event-stream=0.1.6=hd77b12b_5
 aws-checksums=0.1.9=ha925a31_0
 aws-sdk-cpp=1.8.185=hd77b12b_0
 blas=1.0=mkl
+bleach=4.1.0=pyhd3eb1b0_0
 blinker=1.6.2=py310haa95532_0
 boost-cpp=1.82.0=h59b6b97_2
 bottleneck=1.3.7=py310h9128911_0
@@ -60,6 +61,7 @@ fonttools=4.25.0=pyhd3eb1b0_0
 freetype=2.12.1=ha860e81_0
 frozenlist=1.4.0=py310h2bbff1b_0
 fsspec=2023.10.0=py310haa95532_0
+fuzzywuzzy=0.18.0=py310haa95532_0
 gast=0.4.0=pyhd3eb1b0_0
 gflags=2.2.2=hd77b12b_1
 giflib=5.2.1=h8cc25b3_3
@@ -85,10 +87,12 @@ importlib-resources=6.1.1=pyhd3eb1b0_1
 importlib_resources=6.1.1=py310haa95532_1
 intel-openmp=2023.1.0=h59b6b97_46320
 jinja2=3.1.3=py310haa95532_0
+joblib=1.2.0=py310haa95532_0
 jpeg=9e=h2bbff1b_1
 jsonpickle=3.0.2=pypi_0
 jsonschema=4.19.2=py310haa95532_0
 jsonschema-specifications=2023.7.1=py310haa95532_0
+kaggle=1.6.5=pyhd8ed1ab_0
 keras=2.10.0=py310haa95532_0
 keras-preprocessing=1.1.2=pyhd3eb1b0_0
 kiwisolver=1.4.4=py310hd77b12b_0
@@ -143,6 +147,7 @@ multidict=6.0.4=py310h2bbff1b_0
 multiprocess=0.70.14=py310haa95532_0
 munkres=1.1.4=py_0
 networkx=3.1=py310haa95532_0
+nltk=3.8.1=py310haa95532_0
 numexpr=2.8.7=py310h2cd9be0_0
 numpy=1.26.3=py310h055cbcc_0
 numpy-base=1.26.3=py310h65a83cf_0
@@ -172,7 +177,9 @@ pysocks=1.7.1=py310haa95532_0
 python=3.10.13=h966fe2a_0
 python-dateutil=2.8.2=pyhd3eb1b0_0
 python-flatbuffers=2.0=pyhd3eb1b0_0
+python-levenshtein=0.12.2=py310h2bbff1b_0
 python-multipart=0.0.9=pyhd8ed1ab_0
+python-slugify=5.0.2=pyhd3eb1b0_0
 python-tzdata=2023.3=pyhd3eb1b0_0
 python-xxhash=2.0.2=py310h2bbff1b_1
 python_abi=3.10=2_cp310
@@ -211,6 +218,7 @@ tensorflow=2.10.0=mkl_py310hd99672f_0
 tensorflow-base=2.10.0=mkl_py310h6a7f48e_0
 tensorflow-estimator=2.10.0=py310haa95532_0
 termcolor=2.1.0=py310haa95532_0
+text-unidecode=1.3=pyhd3eb1b0_0
 tk=8.6.12=h2bbff1b_0
 tokenizers=0.15.1=py310h49fca51_0
 tomlkit=0.12.0=pyha770c72_0
@@ -226,12 +234,14 @@ tzdata=2023d=h04d1e81_0
 uc-micro-py=1.0.1=py310haa95532_0
 ucrt=10.0.20348.0=haa95532_0
 ujson=5.4.0=py310hd77b12b_0
+unidecode=1.2.0=pyhd3eb1b0_0
 urllib3=1.26.18=py310haa95532_0
 utf8proc=2.6.1=h2bbff1b_1
 uvicorn=0.20.0=py310haa95532_0
 vc=14.2=h21ff451_1
 vc14_runtime=14.38.33130=h82b7239_18
 vs2015_runtime=14.38.33130=hcb4865c_18
+webencodings=0.5.1=py310haa95532_1
 websockets=10.4=py310h2bbff1b_1
 werkzeug=2.3.8=py310haa95532_0
 wheel=0.41.2=py310haa95532_0

@@ -41,10 +41,15 @@ class BinaryChatBot():
 class MovieRecommandationChatBot():
     def __init__(self, language = "ENG"):
         self.language = language
-
+        
         self.demo = gr.ChatInterface(fn=self.chat, 
                                      title = CHATBOT_TITLE, 
-                                     chatbot = gr.Chatbot(value=[[None, CHATBOT_INITIAL_MESSAGE[self.language]]]))
+                                     chatbot = gr.Chatbot(value=[[None, CHATBOT_INITIAL_MESSAGE[self.language]]]),
+                                     examples = list(FIXED_COMMANDS[self.language].keys()))
+        
+        
+        
+        
         self.state = 0 
         """
         0 -> Attente d'une consigne de l'utilisateur

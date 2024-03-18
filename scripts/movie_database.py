@@ -127,7 +127,7 @@ class MovieDatabase():
                 if match[1] > 85:
                     found_genres.append(match[0])
         if found_genres:
-            return True, list(set(found_genres))
+            return True, list(set([x.lower() for x in found_genres]))
         else:
             return False, []
             
@@ -151,7 +151,7 @@ class MovieDatabase():
                     if common_words:
                         found_titles.remove(other_title)
         if found_titles:
-            return True, found_titles
+            return True, [x.lower() for x in found_titles]
         else:
             return False, []
     

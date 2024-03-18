@@ -35,8 +35,8 @@ class ChatBotArgumentParser(argparse.ArgumentParser):
                           help = "Voulez-vous voir le résultats des tests ? ?")
         
         self.add_argument("l", "--language",
-                          dest = "lanuuage",
-                          choices = ["eng","fra"],
+                          dest = "language",
+                          choices = ["ENG","FRA"],
                           default = "eng",
                           help = f"Quelle langue doit parler / comprendre {CHATBOT_TITLE} ?")
         

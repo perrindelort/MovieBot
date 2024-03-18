@@ -39,10 +39,12 @@ class BinaryChatBot():
         self.demo.launch()
 
 class MovieRecommandationChatBot():
-    def __init__(self):
+    def __init__(self, language = "ENG"):
+        self.language = language
+
         self.demo = gr.ChatInterface(fn=self.chat, 
                                      title = CHATBOT_TITLE, 
-                                     chatbot = gr.Chatbot(value=[[None, CHATBOT_INITIAL_MESSAGE]]))
+                                     chatbot = gr.Chatbot(value=[[None, CHATBOT_INITIAL_MESSAGE[self.language]]]))
         self.state = 0 
         """
         0 -> Attente d'une consigne de l'utilisateur
@@ -60,7 +62,7 @@ class MovieRecommandationChatBot():
     
     def update_state(self,message):
         try:
-            self.state = FIXED_COMMANDS[message]
+            self.state = FIXED_COMMANDS[self.language][message]
             return True
         except:
             return False
@@ -77,9 +79,9 @@ class MovieRecommandationChatBot():
         
         print(f"En recevant le message {message} l'état du bot est le suivant : \n    state : {self.state} \n    substate : {self.substate}")
         # Retour au menu
-        if message == INV_FIXED_COMMANDS[0]:
+        if message == INV_FIXED_COMMANDS[self.language][0]:
             self.reset_states()
-            return FIXED_MESSAGES["RETOUR MENU"]
+            return FIXED_MESSAGES[self.language]["RETOUR MENU"]
         
         if self.state == 0:
             
@@ -91,7 +93,7 @@ class MovieRecommandationChatBot():
             
             # Si l'état n'est pas update (input incorrect), on redemande à l'utilisateur jusqu'à obtenir un input correct
             while is_state_updated == False:
-                return  FIXED_MESSAGES["INPUT INCORRECT"]
+                return  FIXED_MESSAGES[self.language]["INPUT INCORRECT"]
         
         if self.state != 0:
             print(f"self.state : {self.state}")
@@ -102,7 +104,7 @@ class MovieRecommandationChatBot():
                 # On demande des genres de film à l'utilisateur
                 if self.substate == 0:
                     self.update_substate()
-                    return FIXED_MESSAGES["DEMANDER GENRES"]
+                    return FIXED_MESSAGES[self.language]["DEMANDER GENRES"]
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
@@ -116,7 +118,7 @@ class MovieRecommandationChatBot():
                         print(retrieved_movies)
                         if retrieved == True:
                             self.reset_states()
-                            return "Voici les films que je vous propose qui correspondent le mieux aux tags " + " ".join([genre for genre in list_genres]) + " ! \n    - " + "\n    - ".join(retrieved_movies)
+                            return FIXED_MESSAGES[self.language]['REPONSE GENRES'] + " ".join([genre for genre in list_genres]) + " ! \n    - " + "\n    - ".join(retrieved_movies)
     
                         
                         # On n'a trouvé aucun film correspondant aux genres demandés par l'utilisateur dans la database
@@ -124,9 +126,9 @@ class MovieRecommandationChatBot():
                         else:
                             # On ne met pas à jour le state
                             # On redemande des genres à l'utilisateur
-                            return FIXED_MESSAGES['GENRES INCONNUS']+"2"
+                            return FIXED_MESSAGES[self.language]['GENRES INCONNUS']+"2"
                     else:
-                        return FIXED_MESSAGES['GENRES INCONNUS']+"1"
+                        return FIXED_MESSAGES[self.language]['GENRES INCONNUS']+"1"
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")
                     
@@ -136,7 +138,7 @@ class MovieRecommandationChatBot():
                 # On demande des titres de films à l'utilisateur
                 if self.substate == 0:
                     self.update_substate()
-                    return FIXED_MESSAGES["DEMANDER FILMS"]
+                    return FIXED_MESSAGES[self.language]["DEMANDER FILMS"]
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
@@ -147,15 +149,15 @@ class MovieRecommandationChatBot():
                         retrieved, retrieved_movies = self.database.retrieve_movies_from_similarity(list_movies)
                         if retrieved == True:
                             self.reset_states()
-                            return "Voici les films que je vous propose ! \n    - " + "\n    - ".join(retrieved_movies)
+                            return FIXED_MESSAGES[self.language]['REPONSE FILM'] + "\n    - ".join(retrieved_movies)
                         
                         # On n'a trouvé aucun film évoqué par l'utilisateur dans la database
                         else:
                             # On ne met pas à jour le state
                             # On redemande des films à l'utilisateur
-                            return FIXED_MESSAGES["FILMS INCONNUS"]+"2"
+                            return FIXED_MESSAGES[self.language]["FILMS INCONNUS"]+"2"
                     else:
-                        return FIXED_MESSAGES["FILMS INCONNUS"] + "1"
+                        return FIXED_MESSAGES[self.language]["FILMS INCONNUS"] + "1"
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")
                     

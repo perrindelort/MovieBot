@@ -29,7 +29,9 @@ FIXED_MESSAGES = {"ENG" : {'INPUT INCORRECT' : "I did not understand what you as
                            'DEMANDER FILMS' : "Give me somes movies that you've seen and like !",
                            'FILMS INCONNUS' : "It seems like I don't know any movie you've told me. \n Can you submit more movies in order for me to help you ?",
                            'GENRES INCONNUS' : "It seems like I don't know any of the genre you mentionned. \n Can you submit more genres in order for me to help you ?",
-                           'RETOUR MENU' :  "You are back to the menu ! Enter one of the following demand \n    - " + '\n    - '.join(list(FIXED_COMMANDS["ENG"].keys())[1:])}
+                           'RETOUR MENU' :  "You are back to the menu ! Enter one of the following demand \n    - " + '\n    - '.join(list(FIXED_COMMANDS["ENG"].keys())[1:]),
+                           'REPONSE GENRES' : "Here are movies that best correspond to the tags  ",
+                           'REPONSE FILMS' : "Here are my movies recommendation ! \n    - " }
 ,
                   "FRA" : {'INPUT INCORRECT' : "Je n'ai pas compris votre demande, entrez l'une des commandes suivantes : \n    - " + '\n    - '.join(FIXED_COMMANDS["FRA"].keys()),
                            'RETOUR ETAT 0' : "J'espère avoir répondu à votre demande ! \n Si vous avez d'autres questions à me poser n'hésitez pas ! :)",
@@ -37,5 +39,7 @@ FIXED_MESSAGES = {"ENG" : {'INPUT INCORRECT' : "I did not understand what you as
                            'DEMANDER FILMS' : "Quels films avez vous-vu et/ou apprécié ?",
                            'FILMS INCONNUS' : "Il semblerait que je ne connaisse aucun des films que vous avez évoqué. \n Pouvez-vous me soumettre de nouveaux titres de films afin que je puisse vous conseiller",
                            'GENRES INCONNUS' : "Il semblerait que je ne connaisse aucun des genres que vous avez évoqué. \n Pouvez-vous me soumettre de nouveaux genres de films afin que je puisse vous conseiller",
-                           'RETOUR MENU' :  "Vous êtes de retour au menu ! Entrez l'une des commandes suivantes \n    - " + '\n    - '.join(list(FIXED_COMMANDS["FRA"].keys())[1:])}
+                           'RETOUR MENU' :  "Vous êtes de retour au menu ! Entrez l'une des commandes suivantes \n    - " + '\n    - '.join(list(FIXED_COMMANDS["FRA"].keys())[1:]),
+                           'REPONSE GENRES' : "Voici les films que je vous propose qui correspondent le mieux aux tags ",
+                           'REPONSE FILMS' : "Voici les films que je vous propose ! \n    - " }
 }

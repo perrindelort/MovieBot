@@ -63,7 +63,18 @@ class MovieDatabase():
         # removing movie and film because it misleads the detection
         genres = genres.str.replace(r'(\s*)(movie|film)(\s*)', '', regex=True)
         self.genres_list = list(set(genres))
-
+        
+# =============================================================================
+#         db = self.database.copy()
+#         db2 = self.database[~self.mask].copy().reset_index()
+#         print(self.database[~self.mask][self.database[~self.mask]['title_lower'] == 'girl vs. monster'].index[0])
+#         print(db[~self.mask][db[~self.mask]['title_lower'] == 'girl vs. monster'].index[0])
+#         print(db2[db2['title_lower'] == 'girl vs. monster'].index[0])
+#         
+#         print(self.similarities[db2[db2['title_lower'] == 'girl vs. monster'].index[0]])
+# =============================================================================
+        
+        
        
     def preprocess(self,processed_data_path = ""):
         """
@@ -110,9 +121,9 @@ class MovieDatabase():
                 if match[1] > 85:
                     found_genres.append(match[0])
         if found_genres:
-            return True, found_genres
+            return True, list(set(found_genres))
         else:
-            False, []
+            return False, []
             
     def extract_titles(self, input_string):
         # Find titles
@@ -230,7 +241,7 @@ class MovieDatabase():
         
         # On randomise les lignes ayant le même nombre de matching tags et on trie par ordre de matching_tags décroissant
         for value in filtered_database['matching_tags'].unique():
-            idx = filtered_database.index[filtered_database['matching_tags'] == value]
+            idx = filtered_database.index[filtered_database['matching_tags'] == value].tolist()
             np.random.shuffle(idx)
             filtered_database.loc[idx, 'random'] = np.random.rand(len(idx))
         filtered_database = filtered_database.sort_values(by=['matching_tags','random'], ascending = [False,True])
@@ -239,11 +250,12 @@ class MovieDatabase():
         # et en breakant les ties avec le random introduit précédemment
         filtered_database = filtered_database.drop_duplicates(subset = ['title_lower'], keep = 'first')
         
-        if filtered_database[0].shape == 0:
+        if filtered_database.shape[0] == 0:
             return False, []
-        elif filtered_database[0].shape <= 5:
+        elif filtered_database.shape[0] <= 5:
             return True, list(filtered_database['title_lower'])
         else:
+            print(filtered_database.sort_values(by=['matching_tags'], ascending = False))
             return True,list(filtered_database['title_lower'])[:5]
     
     def get_synopsis(self,movie):
@@ -287,7 +299,7 @@ class MovieDatabase():
         liste_index = [] 
         length = 0
         
-        db = self.database[~self.mask].copy()
+        db = self.database[~self.mask].copy().reset_index()
         
         # Tri des films valides
         for i in list_movies :                   

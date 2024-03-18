@@ -23,7 +23,8 @@ def test_julien(database : MovieDatabase):
                  liste_movies_6]
     
     for idx, liste_movies in enumerate(test_list):
-        print(f"Test {idx} : \n    Input : {liste_movies} \n    Output : {database.retrieve_movies_from_similarity(liste_movies)} \n")
+        print(f"Test {idx} : \n    Input : {liste_movies} ")
+        print(f"    Output : {database.retrieve_movies_from_similarity(liste_movies)} \n")
     
 # =============================================================================
 #     print("Test 1 :\n" + str(database.retrieve_movies_from_similarity(liste_movies_1)) + "\n")
@@ -43,12 +44,15 @@ def test_hind(database : MovieDatabase):
         "A film about drama",
         "I want a comedye movie",
         "action",
-        "mystery"
+        "mystery",
+        'I love the haunted !',
+        "the haunted,whale rider,die hard with a vengeance,targets,maid in manhattan,the initiation"
     ]
     
     for idx,input_string in enumerate(genre_strings):
+        print(f"Test {idx} : \n    Input : {input_string}")
         extracted, genres = database.extract_genres(input_string)
-        print(f"Test {idx} : \n    Input : {input_string} \n    Output : {genres} \n")
+        print(f"    Output : {genres} \n")
 
 
     # test title intent
@@ -61,8 +65,9 @@ def test_hind(database : MovieDatabase):
     ]
     
     for idx,input_string in enumerate(title_strings):
+        print(f"Test {idx} : \n    Input : {input_string} ")
         extracted, titles = database.extract_titles(input_string)
-        print(f"Test {idx} : \n    Input : {input_string} \n    Output : {titles} \n")
+        print(f"    Output : {titles} \n")
     
     
 def test(database : MovieDatabase):

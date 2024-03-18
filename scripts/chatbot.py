@@ -106,14 +106,14 @@ class MovieRecommandationChatBot():
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
-                    # extracted, list_genres = self.database.extract_genres(message)
-                    extracted, list_genres = True, ['romantic']
+                    extracted, list_genres = self.database.extract_genres(message)
+                    #extracted, list_genres = True, ['romantic']
                     print(extracted, list_genres)
                     if extracted == True:
-                        retrieved, retrieved_movies = self.database.retrieve_movies_from_genre(list_genres)
-                        # print(f"list_genres : {list_genres}")
-                        # print(retrieved_movies)
-                        # retrieved, retrieved_movies = self.database.retrieve_movies_from_genre_optimized(list_genres)
+                        # retrieved, retrieved_movies = self.database.retrieve_movies_from_genre(list_genres)
+                        retrieved, retrieved_movies = self.database.retrieve_movies_from_genre_optimized(list_genres)
+                        print(f"list_genres : {list_genres}")
+                        print(retrieved_movies)
                         if retrieved == True:
                             self.reset_states()
                             return "Voici les films que je vous propose qui correspondent le mieux aux tags " + " ".join([genre for genre in list_genres]) + " ! \n    - " + "\n    - ".join(retrieved_movies)
@@ -140,8 +140,8 @@ class MovieRecommandationChatBot():
                 
                 # On retourne des suggestions de films à l'utilisateur
                 elif self.substate == 1:
-                    #extracted, list_movies = self.database.extract_titles(message)
-                    extracted, list_movies = True, ['girl vs. monster']
+                    extracted, list_movies = self.database.extract_titles(message)
+                    # extracted, list_movies = True, ['girl vs. monster']
                     print(extracted, list_movies)
                     if extracted == True:
                         retrieved, retrieved_movies = self.database.retrieve_movies_from_similarity(list_movies)

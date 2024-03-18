@@ -133,6 +133,8 @@ class MovieDatabase():
             
     def extract_titles(self, input_string):
         # Find titles
+        
+        input_string.lower()
         found_titles = []
 
         for title in self.titles_list:

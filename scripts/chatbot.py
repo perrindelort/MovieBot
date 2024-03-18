@@ -149,7 +149,7 @@ class MovieRecommandationChatBot():
                         retrieved, retrieved_movies = self.database.retrieve_movies_from_similarity(list_movies)
                         if retrieved == True:
                             self.reset_states()
-                            return FIXED_MESSAGES[self.language]['REPONSE FILM'] + "\n    - ".join(retrieved_movies)
+                            return FIXED_MESSAGES[self.language]['REPONSE FILMS'] + "\n    - ".join(retrieved_movies)
                         
                         # On n'a trouvé aucun film évoqué par l'utilisateur dans la database
                         else:

@@ -46,7 +46,12 @@ def test_hind(database : MovieDatabase):
         "action",
         "mystery",
         'I love the haunted !',
-        "the haunted,whale rider,die hard with a vengeance,targets,maid in manhattan,the initiation"
+        "the haunted,whale rider,die hard with a vengeance,targets,maid in manhattan,the initiation",
+        "drama",
+        " I love drama and crime !",
+        "I love drama drama melodrama and dramatic movies the best",
+        "'dramatic','action','cult','western','clever','entertaining'",
+        "I love dramatic movies that are cult, entertaining with a lot of action. If they're western of cult movies I like them even more !!!"
     ]
     
     for idx,input_string in enumerate(genre_strings):

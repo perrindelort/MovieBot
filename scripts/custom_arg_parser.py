@@ -6,7 +6,7 @@ Created on Tue Mar 12 11:32:48 2024
 """
 
 import argparse
-
+from utils import CHATBOT_TITLE
 class ChatBotArgumentParser(argparse.ArgumentParser):
     def __init__(self):
         super().__init__(description="coucou")
@@ -33,4 +33,10 @@ class ChatBotArgumentParser(argparse.ArgumentParser):
                           action = "store_true",
                           default = False,
                           help = "Voulez-vous voir le résultats des tests ? ?")
+        
+        self.add_argument("l", "--language",
+                          dest = "lanuuage",
+                          choices = ["eng","fra"],
+                          default = "eng",
+                          help = f"Quelle langue doit parler / comprendre {CHATBOT_TITLE} ?")
         

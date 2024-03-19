@@ -245,7 +245,7 @@ class MovieDatabase():
         db['matching_tags'] = db['tags_set'].apply(lambda tags: len(tags.intersection(set_genres)))
         print(db)
         # On garde uniquement les lignes avec au moins un match  et on drop la colonne créé sur la database
-        filtered_database = db[db['matching_tags'] > 0][['title_lower','matching_tags']]
+        filtered_database = db[db['matching_tags'] > 0][['title_lower','matching_tags','tags_set']]
        
         # On randomise les lignes ayant le même nombre de matching tags et on trie par ordre de matching_tags décroissant
         filtered_database['random'] = np.random.rand(filtered_database.shape[0])

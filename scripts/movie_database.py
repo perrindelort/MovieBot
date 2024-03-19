@@ -4,6 +4,7 @@ Created on Sun Mar 10 17:58:18 2024
 
 @author: Antoine
 Branch Julien
+
 """
 
 import pandas as pd
@@ -108,35 +109,45 @@ class MovieDatabase():
     
     def extract_genres(self,input_string):
         """
-        Extracts the genre or the title that the bot user asked for and return it
+        Extracts the genre the bot user asked for and return it
         :param input_string: the message of the bot user
-        :return: the genre or the title of the film
+        :return: the genre of the film
         """
-        input_string.lower()
+        found_genres = []
 
+        # Regex
+        input_string_lower = input_string.lower()
+        for genre in self.genres_list:
+            pattern = r'\b(' + re.escape(genre) + r')\b'
+            if re.search(pattern, input_string_lower):
+                found_genres.append(genre)
+
+        # fuzzywuzzy
         words = word_tokenize(input_string)
-        # tag the words and extract nouns and adjectives
         tagged_tokens = pos_tag(words)
         relevant_words = [word.lower() for word, tag in tagged_tokens if tag.startswith('NN') or tag.startswith('JJ')]
-        
-        # Find genres using fuzzy string matching
-        found_genres = []
         for word in relevant_words:
             matches = process.extract(word, self.genres_list, scorer=fuzz.partial_ratio)
             for match in matches:
                 if match[1] > 85:
                     found_genres.append(match[0])
+
         if found_genres:
             return True, list(set([x.lower() for x in found_genres]))
         else:
             return False, []
             
     def extract_titles(self, input_string):
-        # Find titles
+        """
+        Extracts the title the bot user asked for and return it
+        :param input_string: the message of the bot user
+        :return: the title of the film
+        """
         
-        input_string.lower()
+        input_string = input_string.lower()
         found_titles = []
 
+        # regex
         for title in self.titles_list:
             pattern = r'\b(' + re.escape(title) + r')\b'
             if re.search(pattern, input_string):

@@ -86,12 +86,12 @@ class MovieDatabase():
         self.database['plot_synopsis_lower'] = self.database['plot_synopsis'].str.lower()
         self.database['title_lower'] = self.database['title'].str.lower()
         def transform_tags(tag_string):
-            return set(tag_string.replace(" ", "").split(','))
+            return set(tag_string.split(', '))
 
-        self.database['tags_list'] = self.database['tags'].apply(lambda x: x.split(','))
-        self.database['tags_list'] = self.database['tags_list'].apply(lambda tags: tuple(tag.strip() for tag in tags))
+        # self.database['tags_list'] = self.database['tags'].apply(lambda x: x.split(', '))
+        # self.database['tags_list'] = self.database['tags_list'].apply(lambda tags: tuple(tag.strip() for tag in tags))
+        # self.database.drop('tags_list', axis = 1)
         self.database['tags_set'] = self.database['tags'].apply(transform_tags)
-        self.database.drop('tags_list', axis = 1)
         # self.database.to_csv(processed_data_path)
     
     def unique_title(self,films_ids):

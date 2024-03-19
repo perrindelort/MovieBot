@@ -198,20 +198,20 @@ class MovieDatabase():
         # en tire 5 au hasard, sinon on les ajoute à la liste des places disponibles, et on répète l'opération avec le deuxième meilleur
         # score et les places restantes à attribuer.
         
-        suggested=[]
+        suggested_ids=[]
         i,j=0,0
-        while len(suggested)<5 and j<len(sorted_list):
+        while len(suggested_ids)<5 and j<len(sorted_list):
             best_film=sorted_list[i]
             best_matching=sorted_by_matching[best_film]
             current_film=sorted_list[j]
             current_matching=sorted_by_matching[current_film]
-            remaining=5-len(suggested)
+            remaining=5-len(suggested_ids)
             while j<len(sorted_list) and current_matching==best_matching:
                 j+=1
                 current_film=sorted_list[j]
                 current_matching=sorted_by_matching[current_film]
 
-            list_with_doubles=suggested+sorted_list[i:j]
+            list_with_doubles=suggested_ids+sorted_list[i:j]
 
 
             list_without_doubles=self.unique_title(list_with_doubles)
@@ -224,16 +224,16 @@ class MovieDatabase():
 
             n_candidates=len(candidates)
             if n_candidates<=remaining:
-                suggested=suggested+candidates
+                suggested_ids=suggested_ids+candidates
                 i=j
             else:
-                suggested=suggested+random.sample(candidates,remaining)
+                suggested_ids=suggested_ids+random.sample(candidates,remaining)
         suggested_titles=[]
-        for id in suggested:
+        for id in suggested_ids:
             suggested_titles.append(db["title"][id])
             
         #return suggested,suggested_titles
-        return True, suggested_titles
+        return True, suggested_titles, suggested_ids
     
     
     def retrieve_movies_from_genre_optimized(self,genres):
@@ -258,11 +258,11 @@ class MovieDatabase():
         if filtered_database.shape[0] == 0:
             return False, []
         elif filtered_database.shape[0] <= 5:
-            return True, list(filtered_database['title_lower'])
+            return True, list(filtered_database['title_lower']), list(filtered_database.index)
         else:
             print(filtered_database.sort_values(by=['matching_tags'], ascending = False))
             print(filtered_database)
-            return True,list(filtered_database['title_lower'])[:5]
+            return True,list(filtered_database['title_lower'])[:5], list(filtered_database.index)[:5]
     
     def get_synopsis(self,movie):
         """

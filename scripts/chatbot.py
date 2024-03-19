@@ -117,8 +117,8 @@ class MovieRecommandationChatBot():
                     #extracted, list_genres = True, ['romantic']
                     print(extracted, list_genres)
                     if extracted == True:
-                        # retrieved, retrieved_movies = self.database.retrieve_movies_from_genre(list_genres)
-                        retrieved, retrieved_movies = self.database.retrieve_movies_from_genre_optimized(list_genres)
+                        # retrieved, retrieved_movies, retrieved_ids = self.database.retrieve_movies_from_genre(list_genres)
+                        retrieved, retrieved_movies, retrieved_ids = self.database.retrieve_movies_from_genre_optimized(list_genres)
                         print(f"list_genres : {list_genres}")
                         print(retrieved_movies)
                         if retrieved == True:

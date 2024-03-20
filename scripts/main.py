@@ -24,6 +24,6 @@ if __name__ == "__main__":
     chatbot.set_database(database)
     
     if args.test:
-        test(database)
+        test(database, detailed_passed_test = args.detailed_passed_test)
     
     chatbot.launch()

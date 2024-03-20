@@ -32,7 +32,13 @@ class ChatBotArgumentParser(argparse.ArgumentParser):
                           dest = "test",
                           action = "store_true",
                           default = False,
-                          help = "Voulez-vous voir le résultats des tests ? ?")
+                          help = "Voulez-vous voir le résultats des tests ?")
+        
+        self.add_argument("--detailed_passed_test",
+                          dest = "detailed_passed_test",
+                          action = "store_true",
+                          default = False,
+                          help = "Voulez-vous voir en détail le résultats des tests réussis ?")
         
         self.add_argument("-l", "--language",
                           dest = "language",

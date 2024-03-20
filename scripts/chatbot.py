@@ -131,9 +131,9 @@ class MovieRecommandationChatBot():
                         else:
                             # On ne met pas à jour le state
                             # On redemande des genres à l'utilisateur
-                            return FIXED_MESSAGES[self.language]['GENRES INCONNUS']+"2"
+                            return FIXED_MESSAGES[self.language]['GENRES INCONNUS']
                     else:
-                        return FIXED_MESSAGES[self.language]['GENRES INCONNUS']+"1"
+                        return FIXED_MESSAGES[self.language]['GENRES INCONNUS']
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")
                     
@@ -160,9 +160,9 @@ class MovieRecommandationChatBot():
                         else:
                             # On ne met pas à jour le state
                             # On redemande des films à l'utilisateur
-                            return FIXED_MESSAGES[self.language]["FILMS INCONNUS"]+"2"
+                            return FIXED_MESSAGES[self.language]["FILMS INCONNUS"]
                     else:
-                        return FIXED_MESSAGES[self.language]["FILMS INCONNUS"] + "1"
+                        return FIXED_MESSAGES[self.language]["FILMS INCONNUS"]
                 else:
                     raise ValueError(f"Valeur incorrecte : self.substate = {self.substate}")
                     

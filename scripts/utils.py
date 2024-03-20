@@ -50,27 +50,30 @@ def randomly_alter_string(string):
     length = len(string)
 
     # Randomly remove a character
-    if random.random() < 0.2:
+    if random.random() < 0.2 and length > 1:
         index_to_remove = random.randint(0, length - 1)
         del altered_string[index_to_remove]
+        length -= 1
 
     # Randomly insert a space
     if random.random() < 0.2:
-        index_to_insert = random.randint(0, length - 1)
+        index_to_insert = random.randint(0, length)
         altered_string.insert(index_to_insert, ' ')
+        length += 1
 
     # Randomly duplicate a character
-    if random.random() < 0.2:
+    if random.random() < 0.2 and length > 1:
         index_to_duplicate = random.randint(0, length - 1)
         altered_string.insert(index_to_duplicate, altered_string[index_to_duplicate])
+        length += 1
 
     # Randomly replace a character
-    if random.random() < 0.2:
+    if random.random() < 0.2 and length > 0:
         index_to_replace = random.randint(0, length - 1)
         altered_string[index_to_replace] = chr(random.randint(ord('a'), ord('z')))
 
     # Randomly change case of a character
-    if random.random() < 0.2:
+    if random.random() < 0.2 and length > 0:
         index_to_change_case = random.randint(0, length - 1)
         if altered_string[index_to_change_case].isalpha():
             altered_string[index_to_change_case] = altered_string[index_to_change_case].swapcase()

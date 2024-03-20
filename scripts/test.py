@@ -50,12 +50,19 @@ def test_hind(database : MovieDatabase):
                                                    "rommantic film is my favourite",
                                                   "I love drama melodrama and dramatic movies the best",
                                                   "'dramatic','cult','western','clever','entertaining'",
-                                                  "Ta mère en string"
+                                                  "Ta mère en string",
+                                                  " ééé e g؛@", 
+                                                  "",
+                                                  "Hello I am busy today",
+                                                  "ذخرس؛@"
                                                   ],
                                    'expected_output' : [['plot twist', 'horror'],
                                                         ['romantic'],
                                                         ['melodrama','dramatic'],
                                                         ['entertaining','dramatic','western','clever','cult'],
+                                                        [],
+                                                        [],
+                                                        [],
                                                         []
                                                         ]
                                    }
@@ -90,295 +97,106 @@ def test_hind(database : MovieDatabase):
         
 def test_maxime(database : MovieDatabase):
     
-    def test_is_retrieve_movie_from_genre_correct(input_text):
-        pass
-    
-    def test_is_retrieve_movie_from_genre_optimized_correct(input_text):
-        pass
-    
-    
-    
-    def test_1(input = []): #ne doit rien renvoyer
-        print("input: ",input)
+    def test_is_retrieve_movie_from_genre_correct_1(input_text, expected_output_titles, expected_output_ids):
         try:
-            success,ids,titles = database.retrieve_movies_from_genre(input)
-
-            # Si votre fonction a réussi le test
-            if not success and ids==[] and titles==[]:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
+            success, titles, ids = database.retrieve_movies_from_genre(input_text)
+            same_titles = set(titles) == set(expected_output_titles) and len(titles) == len(expected_output_titles)
+            same_ids = set(ids) == set(expected_output_ids) and len(ids) == len(expected_output_ids)
+            if not success and same_titles and same_ids:
+                return True, titles, ids
             else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
+                return False, titles, ids
+        except Exception as e:
+            print(f"Error: {e}")
+            return False, None, None
     
-    def test_1_optimized(input = []): #ne doit rien renvoyer
-        print("input: ",input)
+    def test_is_retrieve_movie_from_genre_optimized_correct_1(input_text, expected_output_titles, expected_output_ids):
         try:
-            success,ids,titles = database.retrieve_movies_from_genre_optimized(input)
-
-            # Si votre fonction a réussi le test
-            if not success and ids==[] and titles==[]:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
+            success, titles, ids = database.retrieve_movies_from_genre_optimized(input_text)
+            same_titles = set(titles) == set(expected_output_titles) and len(titles) == len(expected_output_titles)
+            same_ids = set(ids) == set(expected_output_ids) and len(ids) == len(expected_output_ids)
+            if not success and same_titles and same_ids:
+                return True, titles, ids
             else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
-    
-    def test_2(input = ["chien","chat"]): #ne doit rien renvoyer
-        print("input: ",input)
-        try:
-            success,ids,titles = database.retrieve_movies_from_genre(input)
-
-            # Si votre fonction a réussi le test
-            if not success and ids==[] and titles==[]:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
-            else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
-    
-    def test_2_optimized(input = ["chien","chat"]): #ne doit rien renvoyer
-        print("input: ",input)
-        try:
-            success,ids,titles = database.retrieve_movies_from_genre_optimized(input)
-
-            # Si votre fonction a réussi le test
-            if not success and ids==[] and titles==[]:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
-            else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
+                return False, titles, ids
+        except Exception as e:
+            print(f"Error: {e}")
+            return False, None, None
         
+    def test_is_retrieve_movie_from_genre_correct_2(input_text, allowed_output_titles, allowed_output_ids):
+        try:
+            success, titles, ids = database.retrieve_movies_from_genre(input_text)
+            if not success and len(set(titles).intersection(set(allowed_output_titles))) == 5 and len(set(ids).intersection(set(allowed_output_ids))) == 5:
+                return True, titles, ids
+            else:
+                return False, titles, ids
+        except Exception as e:
+            print(f"Error: {e}")
+            return False, None, None
     
-    def test_3(input = ["horror","good versus evil","insanity","cult","gothic"]): # exactement 5 films ont ces 5 tags
-        print("input: ",input)
+    def test_is_retrieve_movie_from_genre_optimized_correct_2(input_text, allowed_output_titles, allowed_output_ids):
         try:
-            success,ids,titles = database.retrieve_movies_from_genre(input)
-            # Si votre fonction a réussi le test
-            check_ids='tt0103874' in ids and 'tt0095294' in ids and 'tt0101917' in ids and 'tt0273517'in ids and 'tt0120681' in ids and len(ids)==5
-            check_titles='dracula' in titles and 'hellbound: hellraiser ii' in titles and "freddy's dead: the final nightmare" in titles and 'darkness'in titles and 'from hell' in titles and len(titles)==5
-            if success and check_ids and check_titles:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
+            success, titles, ids = database.retrieve_movies_from_genre_optimized(input_text)
+            if not success and len(set(titles).intersection(set(allowed_output_titles))) == 5 and len(set(ids).intersection(set(allowed_output_ids))) == 5:
+                return True, titles, ids
             else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
-
-    def test_3_optimized(input = ["horror","good versus evil","insanity","cult","gothic"]): # exactement 5 films ont ces 5 tags
-        print("input: ",input)
-        try:
-            success,ids,titles = database.retrieve_movies_from_genre_optimized(input)
-            # Si votre fonction a réussi le test
-            check_ids='tt0103874' in ids and 'tt0095294' in ids and 'tt0101917' in ids and 'tt0273517'in ids and 'tt0120681' in ids and len(ids)==5
-            check_titles='dracula' in titles and 'hellbound: hellraiser ii' in titles and "freddy's dead: the final nightmare" in titles and 'darkness'in titles and 'from hell' in titles and len(titles)==5
-            if success and check_ids and check_titles:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
-            else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
-        
-    def test_4(input = ["good versus evil","insanity","cult","gothic"]): # test qui pourrait contenir plusieurs Draculas (normalement non), à lancer plusieurs fois
-        print("input: ",input)
-        try:
-            success,ids,titles = database.retrieve_movies_from_genre(input)
-            # Si votre fonction a réussi le test
-            ids_allowed=['tt0233298', 'tt0091474', 'tt0119099', 'tt0103874', 'tt0096895', 'tt0021814', 'tt0216651', 'tt0095294', 'tt0103776', 'tt0113409', 'tt0114194', 'tt0093605', 'tt0246578', 'tt0100260', 'tt0330373', 'tt0106364', 'tt0114825', 'tt0101917', 'tt0468569', 'tt0273517', 'tt0115986', 'tt0353324', 'tt0120681']
-            titles_allowed=['batman beyond: return of the joker', 'manhunter', 'fallen', 'batman', 'dracula', 'vampire hunter d: bloodlust', 'hellbound: hellraiser ii', 'batman returns', 'in the mouth of madness', 'the prophecy', 'near dark', 'donnie darko', 'nightbreed', 'harry potter and the goblet of fire', 'batman: mask of the phantasm', 'vampire in brooklyn', "freddy's dead: the final nightmare", 'the dark knight', 'darkness', 'the crow: city of angels', 'the crow: wicked prayer', 'from hell']
-            check_ids=ids[0] in ids_allowed and ids[1] in ids_allowed and ids[2] in ids_allowed and ids[3] in ids_allowed and ids[4] in ids_allowed and len(ids)==5
-            check_titles=titles[0] in titles_allowed and titles[1] in titles_allowed and titles[2] in titles_allowed and titles[3] in titles_allowed and titles[4] in titles_allowed and len(titles)==5
-            unique=[]
-            for title in titles:
-                if title not in unique:
-                    unique.append(title)
-            check_uniqueness=(len(unique)==5)
-            if success and check_ids and check_titles and check_uniqueness:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
-            else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
-
-    def test_4_optimized(input = ["good versus evil","insanity","cult","gothic"]): # test qui pourrait contenir plusieurs Draculas (normalement non), à lancer plusieurs fois
-        print("input: ",input)
-        try:
-            success,ids,titles = database.retrieve_movies_from_genre_optimized(input)
-            # Si votre fonction a réussi le test
-            ids_allowed=['tt0233298', 'tt0091474', 'tt0119099', 'tt0103874', 'tt0096895', 'tt0021814', 'tt0216651', 'tt0095294', 'tt0103776', 'tt0113409', 'tt0114194', 'tt0093605', 'tt0246578', 'tt0100260', 'tt0330373', 'tt0106364', 'tt0114825', 'tt0101917', 'tt0468569', 'tt0273517', 'tt0115986', 'tt0353324', 'tt0120681']
-            titles_allowed=['batman beyond: return of the joker', 'manhunter', 'fallen', 'batman', 'dracula', 'vampire hunter d: bloodlust', 'hellbound: hellraiser ii', 'batman returns', 'in the mouth of madness', 'the prophecy', 'near dark', 'donnie darko', 'nightbreed', 'harry potter and the goblet of fire', 'batman: mask of the phantasm', 'vampire in brooklyn', "freddy's dead: the final nightmare", 'the dark knight', 'darkness', 'the crow: city of angels', 'the crow: wicked prayer', 'from hell']
-            check_ids=ids[0] in ids_allowed and ids[1] in ids_allowed and ids[2] in ids_allowed and ids[3] in ids_allowed and ids[4] in ids_allowed and len(ids)==5
-            check_titles=titles[0] in titles_allowed and titles[1] in titles_allowed and titles[2] in titles_allowed and titles[3] in titles_allowed and titles[4] in titles_allowed and len(titles)==5
-            unique=[]
-            for title in titles:
-                if title not in unique:
-                    unique.append(title)
-            check_uniqueness=(len(unique)==5)
-            if success and check_ids and check_titles and check_uniqueness:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
-            else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
-
-    def test_5(input = ["horror","good versus evil","insanity","cult","gothic","romantic"]): # test contenant un titre obligatoire (dracula) et 4 autres random parmi un pool
-        print("input: ",input)
-        try:
-            success,ids,titles = database.retrieve_movies_from_genre(input)
-            # Si votre fonction a réussi le test
-            ids_allowed=['tt0103874', 'tt0102926', 'tt0076786', 'tt0216651', 'tt0095294', 'tt0093605', 'tt0401792', 'tt1213856', 'tt0100260', 'tt0120082', 'tt0106364', 'tt0457430', 'tt0114825', 'tt0101917', 'tt0054215', 'tt0074285', 'tt0273517', 'tt0115986', 'tt0353324', 'tt0120681']
-            titles_allowed=['dracula', 'the silence of the lambs', 'suspiria', 'vampire hunter d: bloodlust', 'hellbound: hellraiser ii', 'near dark', 'sin city', 'du saram-yida', 'nightbreed', 'scream 2', 'batman: mask of the phantasm', 'el laberinto del fauno', 'vampire in brooklyn', "freddy's dead: the final nightmare", 'psycho', 'carrie', 'darkness', 'the crow: city of angels', 'the crow: wicked prayer', 'from hell']
-            check_ids='tt0103874' in ids and ids[1] in ids_allowed and ids[2] in ids_allowed and ids[3] in ids_allowed and ids[4] in ids_allowed and len(ids)==5
-            check_titles='dracula' in titles and titles[1] in titles_allowed and titles[2] in titles_allowed and titles[3] in titles_allowed and titles[4] in titles_allowed and len(titles)==5
-            unique=[]
-            for title in titles:
-                if title not in unique:
-                    unique.append(title)
-            check_uniqueness=(len(unique)==5)
-            if success and check_ids and check_titles and check_uniqueness:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
-            else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
-        
-    def test_5_optimized(input = ["horror","good versus evil","insanity","cult","gothic","romantic"]): # test contenant un titre obligatoire (dracula) et 4 autres random parmi un pool
-        print("input: ",input)
-        try:
-            success,ids,titles = database.retrieve_movies_from_genre_optimized(input)
-            # Si votre fonction a réussi le test
-            ids_allowed=['tt0103874', 'tt0102926', 'tt0076786', 'tt0216651', 'tt0095294', 'tt0093605', 'tt0401792', 'tt1213856', 'tt0100260', 'tt0120082', 'tt0106364', 'tt0457430', 'tt0114825', 'tt0101917', 'tt0054215', 'tt0074285', 'tt0273517', 'tt0115986', 'tt0353324', 'tt0120681']
-            titles_allowed=['dracula', 'the silence of the lambs', 'suspiria', 'vampire hunter d: bloodlust', 'hellbound: hellraiser ii', 'near dark', 'sin city', 'du saram-yida', 'nightbreed', 'scream 2', 'batman: mask of the phantasm', 'el laberinto del fauno', 'vampire in brooklyn', "freddy's dead: the final nightmare", 'psycho', 'carrie', 'darkness', 'the crow: city of angels', 'the crow: wicked prayer', 'from hell']
-            check_ids='tt0103874' in ids and ids[1] in ids_allowed and ids[2] in ids_allowed and ids[3] in ids_allowed and ids[4] in ids_allowed and len(ids)==5
-            check_titles='dracula' in titles and titles[1] in titles_allowed and titles[2] in titles_allowed and titles[3] in titles_allowed and titles[4] in titles_allowed and len(titles)==5
-            unique=[]
-            for title in titles:
-                if title not in unique:
-                    unique.append(title)
-            check_uniqueness=(len(unique)==5)
-            if success and check_ids and check_titles and check_uniqueness:
-                # Je m'arrangerai pour que ça soit en vert dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return True
-            # Si votre fonction a raté le test
-            else:
-                # Je m'arrangerai pour que ça soit en rouge dans le cmd
-                print(f"ids : {ids}")
-                print(f"titles : {titles}")
-                return False
-
-        # Si il y a eu une quelconque erreur lors de l'exécution du code
-        except:
-            return False
-
-    # Je compterai le nombre de tests réussis...
+                return False, titles, ids
+        except Exception as e:
+            print(f"Error: {e}")
+            return False, None, None
     
-    print("tests 1\n")
-    test_1()
-    test_1_optimized()
-    print("\n")
-
-    print("tests 2\n")
-    test_2()
-    test_2_optimized()
-    print("\n")
-
-    print("tests 3\n") 
-    test_3()
-    test_3_optimized()
-    print("\n")
-
-    print("tests 4\n") # a executer plusieurs fois idéalement
-    test_4()
-    test_4_optimized()
-    print("\n")
-
-    print("tests 5\n") # a executer plusieurs fois idéalement
-    test_5()
-    test_5_optimized()
-
+    is_retrieve_movie_from_genre_correct_1 = {'input_text' : [[],
+                                                            ["chien","chat"],
+                                                            ["horror","good versus evil","insanity","cult","gothic"]
+                                                            ],
+                                            'expected_output_titles' : [[],
+                                                                        [],
+                                                                        ["dracula","hellbound: hellraiser ii","freddy's dead: the final nightmare","darkness","from hell"]
+                                                                        ],
+                                            'expected_output_ids' : [[],
+                                                                     [],
+                                                                     ["tt0103874","tt0095294","tt0101917","tt0273517","tt0120681"]
+                                                                     ]
+                                            }
+    
+    functions_1 = [test_is_retrieve_movie_from_genre_correct_1,test_is_retrieve_movie_from_genre_optimized_correct_1]
+    
+    is_retrieve_movie_from_genre_correct_2 = {'input_text' : [["good versus evil","insanity","cult","gothic"],
+                                                              ["horror","good versus evil","insanity","cult","gothic","romantic"]
+                                                            ],
+                                            'allowed_output_titles' : [['batman beyond: return of the joker', 'manhunter', 'fallen', 'batman', 'dracula', 'vampire hunter d: bloodlust', 'hellbound: hellraiser ii', 'batman returns', 'in the mouth of madness', 'the prophecy', 'near dark', 'donnie darko', 'nightbreed', 'harry potter and the goblet of fire', 'batman: mask of the phantasm', 'vampire in brooklyn', "freddy's dead: the final nightmare", 'the dark knight', 'darkness', 'the crow: city of angels', 'the crow: wicked prayer', 'from hell'],
+                                                                        ['dracula', 'the silence of the lambs', 'suspiria', 'vampire hunter d: bloodlust', 'hellbound: hellraiser ii', 'near dark', 'sin city', 'du saram-yida', 'nightbreed', 'scream 2', 'batman: mask of the phantasm', 'el laberinto del fauno', 'vampire in brooklyn', "freddy's dead: the final nightmare", 'psycho', 'carrie', 'darkness', 'the crow: city of angels', 'the crow: wicked prayer', 'from hell']
+                                                                        ],
+                                            'allowed_output_ids' : [['tt0233298', 'tt0091474', 'tt0119099', 'tt0103874', 'tt0096895', 'tt0021814', 'tt0216651', 'tt0095294', 'tt0103776', 'tt0113409', 'tt0114194', 'tt0093605', 'tt0246578', 'tt0100260', 'tt0330373', 'tt0106364', 'tt0114825', 'tt0101917', 'tt0468569', 'tt0273517', 'tt0115986', 'tt0353324', 'tt0120681'],
+                                                                     ['tt0103874', 'tt0102926', 'tt0076786', 'tt0216651', 'tt0095294', 'tt0093605', 'tt0401792', 'tt1213856', 'tt0100260', 'tt0120082', 'tt0106364', 'tt0457430', 'tt0114825', 'tt0101917', 'tt0054215', 'tt0074285', 'tt0273517', 'tt0115986', 'tt0353324', 'tt0120681']
+                                                                     ]
+                                            }
+    
+    functions_2 = [test_is_retrieve_movie_from_genre_correct_2,test_is_retrieve_movie_from_genre_optimized_correct_2]
+    
+    test_number = 1
+    
+    for idx,fn in enumerate(functions_1):
+        for input_text, expected_output_titles, expected_output_ids in zip(is_retrieve_movie_from_genre_correct_1['input_text'],is_retrieve_movie_from_genre_correct_1['expected_output_titles'],is_retrieve_movie_from_genre_correct_1['expected_output_ids']):
+            passed, output_titles, output_ids = fn(input_text,expected_output_titles, expected_output_ids)
+            if passed:
+                print(colored(f"Test {test_number} : passed", 'green'))
+            else:
+                func_type = "unoptimized" if idx == 0 else "optimized"
+                print(colored(f"Test {test_number} : failed \n    Fonction : {func_type} \n    Input : {input_text} \n    Output : {output_titles} \n              {output_ids} \n    Expected output : {expected_output_titles}  \n                    : {expected_output_ids}  \n",'red'))
+            test_number += 1
+    
+    for idx,fn in enumerate(functions_2):
+        for input_text, allowed_output_titles, allowed_output_ids in zip(is_retrieve_movie_from_genre_correct_2['input_text'],is_retrieve_movie_from_genre_correct_2['allowed_output_titles'],is_retrieve_movie_from_genre_correct_2['allowed_output_ids']):
+            passed, output_titles, output_ids = fn(input_text,expected_output_titles, expected_output_ids)
+            if passed:
+                print(colored(f"Test {test_number} : passed", 'green'))
+            else:
+                func_type = "unoptimized" if idx == 0 else "optimized"
+                print(colored(f"Test {test_number} : failed \n    Fonction : {func_type} \n    Input : {input_text} \n    Output : {output_titles} \n              {output_ids} \n    Allowed output : {allowed_output_titles}  \n                   : {allowed_output_ids}  \n",'red'))
+            test_number += 1
+ 
+        
 
 def test(database : MovieDatabase):
     n_dashes = 100
@@ -388,5 +206,5 @@ def test(database : MovieDatabase):
     print("                            TEST DE JULIEN                            ")
     test_julien(database)
     print("                            TEST DE MAXIME                            ")
-    # test_maxime(database)
+    test_maxime(database)
     print("-"*n_dashes)

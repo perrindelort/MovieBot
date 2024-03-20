@@ -197,12 +197,12 @@ class MovieDatabase():
         
         # Si y'a pas de match : return False
         if len(sorted_list) == 0:
-            return False, []
+            return False, [], []
         
         # si cette liste est de taille inférieure à 5 (5 films ou moins matchent avec au moins un tag) on la renvoie directement en ne
         # gardant qu'un film par titre
         if len(sorted_list)<=5:
-            return True, self.unique_title(sorted_list)
+            raise ValueError("Selon Maxime le cas len(sorted_list) <= 5 n'est pas censé arrivé")
         
         # sinon on sélectionne au fur et à mesure les candidats qui matchent le mieux jusqu'à remplir les 5 places. On part du meilleur
         # score N, et on compte le nombre de films qui ont N tags en commun avec la liste d'entrée. Si ce nombre est supérieur à 5, on
@@ -250,13 +250,13 @@ class MovieDatabase():
     def retrieve_movies_from_genre_optimized(self,genres):
         
         set_genres = set(genres)
-        print(set_genres)
+        # print(set_genres)
         # On compte le nombre de tags en commun
         db = self.database.copy()
         db['matching_tags'] = db['tags_set'].apply(lambda tags: len(tags.intersection(set_genres)))
-        print(db)
+        # print(db)
         # On garde uniquement les lignes avec au moins un match  et on drop la colonne créé sur la database
-        filtered_database = db[db['matching_tags'] > 0][['title_lower','matching_tags','tags_set']]
+        filtered_database = db[db['matching_tags'] > 0][['title_lower','matching_tags','tags_set','imdb_id']]
        
         # On randomise les lignes ayant le même nombre de matching tags et on trie par ordre de matching_tags décroissant
         filtered_database['random'] = np.random.rand(filtered_database.shape[0])
@@ -267,13 +267,13 @@ class MovieDatabase():
         filtered_database = filtered_database.drop_duplicates(subset = ['title_lower'], keep = 'first')
        
         if filtered_database.shape[0] == 0:
-            return False, []
+            return False, [], []
         elif filtered_database.shape[0] <= 5:
-            return True, list(filtered_database['title_lower']), list(filtered_database.index)
+            return True, list(filtered_database['title_lower']), list(filtered_database['imdb_id'])
         else:
-            print(filtered_database.sort_values(by=['matching_tags'], ascending = False))
-            print(filtered_database)
-            return True,list(filtered_database['title_lower'])[:5], list(filtered_database.index)[:5]
+            # print(filtered_database.sort_values(by=['matching_tags'], ascending = False))
+            # print(filtered_database)
+            return True,list(filtered_database['title_lower'])[:5], list(filtered_database['imdb_id'])[:5]
     
     def get_synopsis(self,movie):
         """

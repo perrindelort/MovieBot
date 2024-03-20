@@ -50,11 +50,13 @@ def test_hind(database : MovieDatabase):
                                                    "rommantic film is my favourite",
                                                   "I love drama melodrama and dramatic movies the best",
                                                   "'dramatic','cult','western','clever','entertaining'",
+                                                  "Ta mère en string"
                                                   ],
                                    'expected_output' : [['plot twist', 'horror'],
                                                         ['romantic'],
                                                         ['melodrama','dramatic'],
-                                                        ['entertaining','dramatic','western','clever','cult']
+                                                        ['entertaining','dramatic','western','clever','cult'],
+                                                        []
                                                         ]
                                    }
     

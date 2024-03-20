@@ -129,7 +129,7 @@ class MovieDatabase():
         for word in relevant_words:
             matches = process.extract(word, self.genres_list, scorer=fuzz.partial_ratio)
             for match in matches:
-                if match[1] > 85:
+                if match[1] > 95:
                     found_genres.append(match[0])
 
         if found_genres:

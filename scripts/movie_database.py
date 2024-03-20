@@ -256,7 +256,7 @@ class MovieDatabase():
         db['matching_tags'] = db['tags_set'].apply(lambda tags: len(tags.intersection(set_genres)))
         # print(db)
         # On garde uniquement les lignes avec au moins un match  et on drop la colonne créé sur la database
-        filtered_database = db[db['matching_tags'] > 0][['title_lower','matching_tags','tags_set','imdb_id']]
+        filtered_database = db[db['matching_tags'] > 0][['title','matching_tags','tags_set','imdb_id']]
        
         # On randomise les lignes ayant le même nombre de matching tags et on trie par ordre de matching_tags décroissant
         filtered_database['random'] = np.random.rand(filtered_database.shape[0])
@@ -264,16 +264,16 @@ class MovieDatabase():
         # On enlève les films en doubles en gardant celui qui match le mieux les tags 
         # et en breakant les ties avec le random introduit précédemment
         filtered_database = filtered_database.sort_values(by=['matching_tags','random'], ascending = [False,True])
-        filtered_database = filtered_database.drop_duplicates(subset = ['title_lower'], keep = 'first')
+        filtered_database = filtered_database.drop_duplicates(subset = ['title'], keep = 'first')
        
         if filtered_database.shape[0] == 0:
             return False, [], []
         elif filtered_database.shape[0] <= 5:
-            return True, list(filtered_database['title_lower']), list(filtered_database['imdb_id'])
+            return True, list(filtered_database['title']), list(filtered_database['imdb_id'])
         else:
             # print(filtered_database.sort_values(by=['matching_tags'], ascending = False))
             # print(filtered_database)
-            return True,list(filtered_database['title_lower'])[:5], list(filtered_database['imdb_id'])[:5]
+            return True,list(filtered_database['title'])[:5], list(filtered_database['imdb_id'])[:5]
     
     def get_synopsis(self,movie):
         """

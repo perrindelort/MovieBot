@@ -67,7 +67,6 @@ def test_hind(database : MovieDatabase, detailed_passed_test = False):
         except Exception as e:
             print(f"Error: {e}")
             return False, None
-    
             
     
     is_extraction_genre_correct = {'input_text' : ["I want a plot twist film or horror",
@@ -103,7 +102,14 @@ def test_hind(database : MovieDatabase, detailed_passed_test = False):
                                    }
     
     is_extraction_genre_robust = {'input_text' : [randomly_alter_string(genre) for genre in database.genres_list],
-                                  'expected_output' : [[genre] for genre in database.genres_list]}
+                                  'expected_output' : [[genre] for genre in database.genres_list]
+                                  }
+    
+    is_extraction_genre_working = {'input_text' : [genre for genre in database.genres_list],
+                                  'expected_output' : [[genre] for genre in database.genres_list]
+                                  }
+    
+    print(is_extraction_genre_working)
     
     test_number = 1 
     for input_text, expected_output in zip(is_extraction_genre_correct['input_text'],is_extraction_genre_correct['expected_output']):
@@ -129,6 +135,17 @@ def test_hind(database : MovieDatabase, detailed_passed_test = False):
         test_number += 1
         
     for input_text, expected_output in zip(is_extraction_genre_robust['input_text'], is_extraction_genre_robust['expected_output']):
+        passed, output = test_is_extraction_genre_correct(input_text,expected_output)
+        if passed:
+            if detailed_passed_test:
+                print(colored(f"Test {test_number} : passed \n    Input : {input_text} \n    Output : {output} \n    Expected output : {expected_output} \n",'green'))
+            else:
+                print(colored(f"Test {test_number} : passed", 'green'))
+        else:
+            print(colored(f"Test {test_number} : failed \n    Input : {input_text} \n    Output : {output} \n    Expected output : {expected_output} \n",'red'))
+        test_number += 1
+        
+    for input_text, expected_output in zip(is_extraction_genre_working['input_text'], is_extraction_genre_working['expected_output']):
         passed, output = test_is_extraction_genre_correct(input_text,expected_output)
         if passed:
             if detailed_passed_test:

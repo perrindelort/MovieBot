@@ -9,6 +9,7 @@ import os
 from movie_database import MovieDatabase
 from chatbot import create_chatbot
 from custom_arg_parser import ChatBotArgumentParser
+from test import test
 
 if __name__ == "__main__":
     parser = ChatBotArgumentParser()

@@ -35,16 +35,15 @@ def test_hind(database : MovieDatabase):
             return output == expected_output, output
         except Exception as e:
             print(f"Error: {e}")
-            return False, output
+            return False, None
         
     def test_is_extraction_movie_correct(input_text, expected_input):
         try:
             output = sorted(database.extract_titles(input_text)[1], key=lambda x: len(x), reverse=True)
-            expected_output = ['skeleton crew']
             return output == expected_output, output
         except Exception as e:
             print(f"Error: {e}")
-            return False, output
+            return False, None
             
     
     is_extraction_genre_correct = {'input_text' : ["I want a plot twist film or horror",
@@ -72,7 +71,7 @@ def test_hind(database : MovieDatabase):
     
     test_number = 1 
     for input_text,expected_output in zip(is_extraction_genre_correct['input_text'],is_extraction_genre_correct['expected_output']):
-        passed, output = test_is_extraction_movie_correct(input_text,expected_output)
+        passed, output = test_is_extraction_genre_correct(input_text,expected_output)
         if passed:
             print(colored(f"Test {test_number} : passed", 'green'))
         else:
@@ -80,7 +79,7 @@ def test_hind(database : MovieDatabase):
         test_number += 1
         
     for input_text,expected_output in zip(is_extraction_title_correct['input_text'],is_extraction_title_correct['expected_output']):
-        passed, output = test_is_extraction_genre_correct(input_text,expected_output)
+        passed, output = test_is_extraction_movie_correct(input_text,expected_output)
         if passed:
             print(colored(f"Test {test_number} : passed", 'green'))
         else:

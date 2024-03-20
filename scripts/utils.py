@@ -4,6 +4,7 @@ Created on Wed Mar 13 15:59:49 2024
 
 @author: Antoine
 """
+import random
 
 CHATBOT_TITLE = "MovieBot"
 
@@ -43,3 +44,35 @@ FIXED_MESSAGES = {"ENG" : {'INPUT INCORRECT' : "I did not understand what you as
                            'REPONSE GENRES' : "Voici les films que je vous propose qui correspondent le mieux aux tags ",
                            'REPONSE FILMS' : "Voici les films que je vous propose ! \n    - " }
 }
+
+def randomly_alter_string(string):
+    altered_string = list(string)
+    length = len(string)
+
+    # Randomly remove a character
+    if random.random() < 0.2:
+        index_to_remove = random.randint(0, length - 1)
+        del altered_string[index_to_remove]
+
+    # Randomly insert a space
+    if random.random() < 0.2:
+        index_to_insert = random.randint(0, length - 1)
+        altered_string.insert(index_to_insert, ' ')
+
+    # Randomly duplicate a character
+    if random.random() < 0.2:
+        index_to_duplicate = random.randint(0, length - 1)
+        altered_string.insert(index_to_duplicate, altered_string[index_to_duplicate])
+
+    # Randomly replace a character
+    if random.random() < 0.2:
+        index_to_replace = random.randint(0, length - 1)
+        altered_string[index_to_replace] = chr(random.randint(ord('a'), ord('z')))
+
+    # Randomly change case of a character
+    if random.random() < 0.2:
+        index_to_change_case = random.randint(0, length - 1)
+        if altered_string[index_to_change_case].isalpha():
+            altered_string[index_to_change_case] = altered_string[index_to_change_case].swapcase()
+
+    return ''.join(altered_string)

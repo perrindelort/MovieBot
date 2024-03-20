@@ -125,7 +125,7 @@ class MovieDatabase():
         # fuzzywuzzy
         words = word_tokenize(input_string)
         tagged_tokens = pos_tag(words)
-        relevant_words = [word.lower() for word, tag in tagged_tokens if tag.startswith('NN') or tag.startswith('JJ')]
+        relevant_words = [word.lower() for word, tag in tagged_tokens if (tag.startswith('NN') or tag.startswith('JJ')) and len(word) > 3]
         for word in relevant_words:
             matches = process.extract(word, self.genres_list, scorer=fuzz.partial_ratio)
             for match in matches:

@@ -108,34 +108,34 @@ class MovieDatabase():
         return unique
     
     def extract_genres(self,input_string):
-        """
-        Extracts the genre the bot user asked for and return it
-        :param input_string: the message of the bot user
-        :return: the genre of the film
-        """
-        found_genres = []
-
-        # Regex
-        input_string_lower = input_string.lower()
-        for genre in self.genres_list:
-            pattern = r'{}'.format(''.join(f'{char}+' for char in genre))
-            if re.search(pattern, input_string_lower):
-                found_genres.append(genre)
-
-        # fuzzywuzzy
-        words = word_tokenize(input_string)
-        tagged_tokens = pos_tag(words)
-        relevant_words = [word.lower() for word, tag in tagged_tokens if (tag.startswith('NN') or tag.startswith('JJ')) and len(word) > 3]
-        for word in relevant_words:
-            matches = process.extract(word, self.genres_list, scorer=fuzz.partial_ratio)
-            for match in matches:
-                if match[1] == 100:
-                    found_genres.append(match[0])
-
-        if found_genres:
-            return True, list(set([x.lower() for x in found_genres]))
-        else:
-            return False, []
+            """
+            Extracts the genre the bot user asked for and return it
+            :param input_string: the message of the bot user
+            :return: the genre of the film
+            """
+            found_genres = []
+    
+            # Regex
+            input_string_lower = input_string.lower()
+            for genre in self.genres_list:
+                pattern = r'{}'.format(''.join(f'{char}+' for char in genre))
+                if re.search(pattern, input_string_lower):
+                    found_genres.append(genre)
+    
+            # fuzzywuzzy
+            words = word_tokenize(input_string)
+            tagged_tokens = pos_tag(words)
+            relevant_words = [word.lower() for word, tag in tagged_tokens if (tag.startswith('NN') or tag.startswith('JJ')) and len(word) > 3]
+            for word in relevant_words:
+                matches = process.extract(word, self.genres_list, scorer=fuzz.partial_ratio)
+                for match in matches:
+                    if match[1] == 100:
+                        found_genres.append(match[0])
+    
+            if found_genres:
+                return True, list(set([x.lower() for x in found_genres]))
+            else:
+                return False, []
             
     def extract_titles(self, input_string):
         """

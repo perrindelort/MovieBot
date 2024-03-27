@@ -9,8 +9,9 @@ Donnez-lui des genres de films qui vous plait ou directement des titres de films
 
 
 Ce projet a été réalisé de manière totalement autonome dans le cadre de l'UE NLP enseignée au sein d'IMT ATLANTIQUE par :
-* [Antoine PERRIN--DELORT](https://github.com/perrindelort)
-* Hind FARIS
 * Julien BONTEMPS
+* [Hind FARIS](https://github.com/HindFaris)
 * Maxime GARFAGNI
+* [Antoine PERRIN--DELORT](https://github.com/perrindelort)
+
 

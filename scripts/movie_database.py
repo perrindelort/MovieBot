@@ -107,7 +107,7 @@ class MovieDatabase():
                 unique.append(id)
         return unique
     
-    def extract_genres(self,input_string):
+def extract_genres(self,input_string):
         """
         Extracts the genre the bot user asked for and return it
         :param input_string: the message of the bot user
@@ -118,7 +118,7 @@ class MovieDatabase():
         # Regex
         input_string_lower = input_string.lower()
         for genre in self.genres_list:
-            pattern = r'\b(' + re.escape(genre) + r')\b'
+            pattern = r'{}'.format(''.join(f'{char}+' for char in genre))
             if re.search(pattern, input_string_lower):
                 found_genres.append(genre)
 
@@ -129,7 +129,7 @@ class MovieDatabase():
         for word in relevant_words:
             matches = process.extract(word, self.genres_list, scorer=fuzz.partial_ratio)
             for match in matches:
-                if match[1] > 95:
+                if match[1] == 100:
                     found_genres.append(match[0])
 
         if found_genres:
